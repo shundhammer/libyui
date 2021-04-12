@@ -16,7 +16,7 @@ set( EXAMPLES_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/include )
 
 # Symlink ../../libyui/src to build/examples/include/yui
 # so the headers there can be included as <yui/YFoo.h>
-add_custom_target( examples-include-dir
+add_custom_target( local-include-dir-qt-graph-examples
   COMMAND rm -rf ${EXAMPLES_INCLUDE_DIR}
   COMMAND mkdir  ${EXAMPLES_INCLUDE_DIR}
   COMMAND ln -s  ${CMAKE_CURRENT_SOURCE_DIR}/../../libyui/src ${EXAMPLES_INCLUDE_DIR}/yui )
@@ -28,7 +28,7 @@ add_custom_target( examples-include-dir
 function( add_example EXAMPLE )
   add_executable( ${EXAMPLE} ${EXAMPLE}.cc )
   target_link_libraries( ${EXAMPLE} yui ${LIBGVC_LIBRARIES} )
-  add_dependencies( ${EXAMPLE} libyui-qt-graph examples-include-dir )
+  add_dependencies( ${EXAMPLE} libyui-qt-graph local-include-dir-qt-graph-examples )
 
   # Prefer the headers in ../../libyui/src over those in /usr/include
   target_include_directories( ${EXAMPLE} BEFORE PUBLIC ${EXAMPLES_INCLUDE_DIR} )

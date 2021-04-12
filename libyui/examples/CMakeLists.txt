@@ -13,7 +13,7 @@ if ( USE_FRESHLY_BUILT_LIBYUI )
   #
   # FIXME: This will still load the UI plug-ins from the system, not the
   # freshly built ones.
-  set( LIBYUI ${CMAKE_BINARY_DIR}/src/libyui.so )
+  set( LIBYUI ${CMAKE_CURRENT_BINARY_DIR}/../src/libyui.so )
 else()
   # Link against the system libyui in /usr/lib64. No rpath.
   set( LIBYUI yui )
@@ -24,7 +24,7 @@ set( LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/include )
 
 # Symlink ../src to build/examples/include/yui
 # so the headers there can be included as <yui/YFoo.h>
-add_custom_target( local-include-dir
+add_custom_target( local-include-dir-libyui-examples
   COMMAND rm -rf ${LOCAL_INCLUDE_DIR}
   COMMAND mkdir  ${LOCAL_INCLUDE_DIR}
   COMMAND ln -s  ${CMAKE_CURRENT_SOURCE_DIR}/../src ${LOCAL_INCLUDE_DIR}/yui )
@@ -38,7 +38,7 @@ function( add_example EXAMPLE )
   target_link_libraries( ${EXAMPLE} ${LIBYUI} )
 
   if ( USE_FRESHLY_BUILT_LIBYUI )
-    add_dependencies( ${EXAMPLE} libyui local-include-dir )
+    add_dependencies( ${EXAMPLE} libyui local-include-dir-libyui-examples )
     # Prefer the headers in ../src over those in /usr/include
     target_include_directories( ${EXAMPLE} BEFORE PUBLIC ${LOCAL_INCLUDE_DIR} )
   endif()

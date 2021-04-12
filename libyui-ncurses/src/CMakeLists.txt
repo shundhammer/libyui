@@ -216,7 +216,7 @@ set( LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/include )
 
 # Symlink ../../libyui/src to build/src/include/yui
 # so the headers there can be included as <yui/YFoo.h>
-add_custom_target( local-include-dir
+add_custom_target( local-include-dir-ncurses
   # check if the symlink already exists
   COMMAND if [ ! -L "${LOCAL_INCLUDE_DIR}/yui" ]\; then
       rm -rf ${LOCAL_INCLUDE_DIR}\;
@@ -225,7 +225,7 @@ add_custom_target( local-include-dir
     fi
   )
 
-add_dependencies( ${TARGETLIB} local-include-dir )
+add_dependencies( ${TARGETLIB} local-include-dir-ncurses )
 target_include_directories( ${TARGETLIB} BEFORE PUBLIC ${LOCAL_INCLUDE_DIR} )
 
 # Allow operator<<() to output internal values of NCurses WINDOW etc.
